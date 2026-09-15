@@ -1,0 +1,33 @@
+{
+  "required": true,
+  "package": "net.reggie.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ExampleMixin",
+    "LivingEntityMixin",
+    "LunarianFireImmunityMixin",
+    "PlayerDamageMixin",
+    "PlayerDeathHakiMixin",
+    "PlayerEntityMixin",
+    "PlayerHealthMixin",
+    "WaterWeaknessMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "client.CombinedFirstPersonHakiMixin",
+    "client.CustomHealthBarMixin",
+    "client.EntityGlowMixin",
+    "client.EntityRendererMixin",
+    "client.HakiOutlineRendererMixin",
+    "client.KeyboardSlotsMixin",
+    "client.MinecraftClientMixin",
+    "client.MouseMixin",
+    "client.PlayerEntityModelMixin",
+    "client.PlayerHakiOverlayMixin"
+  ]
+}

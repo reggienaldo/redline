@@ -1,0 +1,24 @@
+{
+  "item.redline.king_of_purgatory_katana": "Enma",
+  "item.redline.emperors_skyrend_saber": "Gryphon",
+  "item.redline.dark_sovereign_long_great_sword": "Yoru",
+  "item.redline.axe": "Axe",
+  "item.redline.shusui": "Shusui",
+
+  "item.redline.steel_ingot": "Steel Ingot",
+
+  "item.redline.gomu_gomu_no_mi": "Gomu Gomu no Mi",
+
+  "itemgroup.ingridients": "Redline Ingridients",
+  "itemgroup.combat": "Redline Weapons",
+  "itemgroup.fruits": "Redline Fruits",
+
+  "key.category.redline.redline": "Redline",
+
+  "key.redline.haki_activation": "Activate Haki",
+  "key.redline.combat_mode": "Combat Mode",
+  "key.redline.ability_y": "Use Ability Y",
+  "key.redline.ability_x": "Use Ability X",
+  "key.redline.ability_c": "Use Ability C",
+  "key.redline.ability_v": "Use Ability V"
+}

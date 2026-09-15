@@ -1,0 +1,62 @@
+{
+  "haki_release": {
+    "subtitle": "sounds.redline.hao_haki",
+    "sounds": [
+      "redline:haki_release"
+      ]
+  },
+  "geppo": {
+    "subtitle": "sounds.redline.geppo",
+    "sounds": [
+      "redline:geppo"
+    ]
+  },
+  "haki_activate": {
+    "subtitle": "sounds.redline.buso_haki",
+    "sounds": [
+      "redline:haki_activate"
+    ]
+  },
+  "kenbunshoku_haki_on": {
+    "subtitle": "sounds.redline.kenbunshoku_haki_on",
+    "sounds": [
+      "redline:kenbunshoku_haki_on"
+    ]
+  },
+  "kenbunshoku_haki_off": {
+    "subtitle": "sounds.redline.kenbunshoku_haki_off",
+    "sounds": [
+      "redline:kenbunshoku_haki_off"
+    ]
+  },
+  "guard_haki": {
+    "subtitle": "sounds.redline.guard_haki",
+    "sounds": [
+      "redline:guard_haki"
+    ]
+  },
+  "future_sight_hit": {
+    "subtitle": "sounds.redline.future_sight_hit",
+    "sounds": [
+      "redline:future_sight_hit"
+    ]
+  },
+  "dodge": {
+    "subtitle": "sounds.redline.dodge",
+    "sounds": [
+      "redline:dodge"
+    ]
+  },
+  "soru": {
+    "subtitle": "sounds.redline.soru",
+    "sounds": [
+      "redline:soru"
+    ]
+  },
+  "explode": {
+    "subtitle": "sounds.redline.explode",
+    "sounds": [
+      "redline:explode"
+    ]
+  }
+}

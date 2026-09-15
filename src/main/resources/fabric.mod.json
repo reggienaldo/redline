@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "redline",
+	"version": "${version}",
+	"name": "Redline",
+	"description": "This is a One Piece mod",
+	"authors": [
+		"Reggie"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/redline/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"cardinal-components": [
+			"net.reggie.Redline"
+		],
+		"main": [
+			"net.reggie.Redline"
+		],
+		"client": [
+			"net.reggie.RedlineClient"
+		],
+		"fabric-datagen": [
+			"net.reggie.RedlineDataGenerator"
+		]
+	},
+	"custom": {
+		"cardinal-components": [
+			"redline:haki",
+			"redline:combat_mode",
+			"redline:ability",
+			"redline:doriki",
+			"redline:devil_fruit",
+			"redline:fighting_style",
+			"redline:race"
+		]
+	},
+	"mixins": [
+		"redline.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

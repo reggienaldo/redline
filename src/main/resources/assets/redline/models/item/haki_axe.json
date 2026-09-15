@@ -1,0 +1,96 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made by amonde",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "redline:item/haki_axe",
+		"particle": "redline:item/haki_axe"
+	},
+	"elements": [
+		{
+			"from": [7, 6, -10.75],
+			"to": [9, 8, 20.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 7, 10.25]},
+			"faces": {
+				"north": {"uv": [3, 4.5, 3.5, 5], "texture": "#0"},
+				"east": {"uv": [3.5, 0, 8.5, 0.5], "texture": "#0"},
+				"south": {"uv": [3, 5, 3.5, 5.5], "texture": "#0"},
+				"west": {"uv": [3.5, 0.5, 8.5, 1], "texture": "#0"},
+				"up": {"uv": [4, 6, 3.5, 1], "texture": "#0"},
+				"down": {"uv": [4.5, 1, 4, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.5, 5.5, -9.75],
+			"to": [9.5, 8.5, 0.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 7, -3.75]},
+			"faces": {
+				"north": {"uv": [6.75, 5.25, 7.5, 6], "texture": "#0"},
+				"east": {"uv": [1, 4.5, 3, 5.25], "texture": "#0"},
+				"south": {"uv": [6, 6.75, 6.75, 7.5], "texture": "#0"},
+				"west": {"uv": [4.5, 2, 6.5, 2.75], "texture": "#0"},
+				"up": {"uv": [5.25, 4.75, 4.5, 2.75], "texture": "#0"},
+				"down": {"uv": [5.25, 4.75, 4.5, 6.75], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, -10.5, -14.75],
+			"to": [8, 5.5, 5.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2, -3.75]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 2.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 3.5, 2.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 0, 2.25], "texture": "#0"},
+				"west": {"uv": [0, 2.25, 3.5, 4.5], "texture": "#0"},
+				"up": {"uv": [0, 3.5, 0, 0], "texture": "#0"},
+				"down": {"uv": [0, 0, 0, 3.5], "texture": "#0"}
+			}
+		}
+	],
+	"gui_light": "front",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [90, 0, 0],
+			"translation": [0, 1.5, 3]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [90, 0, 0],
+			"translation": [0, 1.5, 3]
+		},
+		"firstperson_righthand": {
+			"rotation": [100, 15, 0],
+			"translation": [4.25, 2.25, 0.25],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [100, 15, 0],
+			"translation": [4.25, 2.25, 0.25],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"rotation": [90, -90, 0],
+			"translation": [0, -2.75, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"gui": {
+			"rotation": [90, 45, -90],
+			"translation": [4, -0.25, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"fixed": {
+			"rotation": [90, -45, 90],
+			"translation": [-3.5, 0.25, -1.5],
+			"scale": [0.75, 0.75, 0.75]
+		}
+	},
+	"groups": [
+		{
+			"name": "weapon",
+			"origin": [8, 7.75, 14.25],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	],
+	"mcmodels": "7c38a6d06566bdd78796b4a138633b3f"
+}
