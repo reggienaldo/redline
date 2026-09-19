@@ -64,12 +64,10 @@ public class RedlineClient implements ClientModInitializer {
 
     }
 
-    public static void playPistol() {
-
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null) return;
-
-        AbstractClientPlayerEntity player = client.player;
+    public static void playPistol(AbstractClientPlayerEntity player) {
+        if (player == null) {
+            return;
+        }
 
         Object layer = PlayerAnimationAccess.getPlayerAnimationLayer(
                 player,
@@ -83,11 +81,10 @@ public class RedlineClient implements ClientModInitializer {
         );
     }
 
-    public static void playBazooka() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null) return;
-
-        AbstractClientPlayerEntity player = client.player;
+    public static void playBazooka(AbstractClientPlayerEntity player) {
+        if (player == null) {
+            return;
+        }
 
         // Greift auf deinen registrierten Animations-Layer zu (Multiplayer- und Client-Safe!)
         Object layer = PlayerAnimationAccess.getPlayerAnimationLayer(
@@ -107,11 +104,10 @@ public class RedlineClient implements ClientModInitializer {
         controller.triggerAnimation(rawAnim);
     }
 
-    public static void playGatling() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null) return;
-
-        AbstractClientPlayerEntity player = client.player;
+    public static void playGatling(AbstractClientPlayerEntity player) {
+        if (player == null) {
+            return;
+        }
         Object layer = PlayerAnimationAccess.getPlayerAnimationLayer(player, RedlineClient.ANIMATION_LAYER_ID);
 
         if (!(layer instanceof PlayerAnimationController controller)) return;
@@ -125,11 +121,10 @@ public class RedlineClient implements ClientModInitializer {
         controller.triggerAnimation(rawAnim);
     }
 
-    public static void stopGatlingAnimation() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null) return;
-
-        AbstractClientPlayerEntity player = client.player;
+    public static void stopGatlingAnimation(AbstractClientPlayerEntity player) {
+        if (player == null) {
+            return;
+        }
         Object layer = PlayerAnimationAccess.getPlayerAnimationLayer(player, RedlineClient.ANIMATION_LAYER_ID);
 
         if (layer instanceof PlayerAnimationController controller) {

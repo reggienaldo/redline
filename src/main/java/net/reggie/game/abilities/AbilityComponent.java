@@ -20,8 +20,14 @@ public class AbilityComponent implements ComponentV3, AutoSyncedComponent, Serve
     private final AbilityInventoryComposition inventory = new AbilityInventoryComposition();
     private final AbilityCooldownComposition cooldowns = new AbilityCooldownComposition();
 
+    private final GomuGatlingAbility gatling = new GomuGatlingAbility();
+
     public AbilityComponent(PlayerEntity player) {
         this.player = player;
+    }
+
+    public GomuGatlingAbility getGatling() {
+        return gatling;
     }
 
     public AbilityInventoryComposition getInventory() {
@@ -35,7 +41,7 @@ public class AbilityComponent implements ComponentV3, AutoSyncedComponent, Serve
     @Override
     public void serverTick() {
         // --- GOMU GOMU NO GATLING SCHLAGHAGEL UPDATER ---
-        GomuGatlingAbility.handleGatlingTick((ServerPlayerEntity) player);
+        gatling.handleGatlingTick((ServerPlayerEntity) player);
 
         if (!player.getWorld().isClient && (!inventory.getGridInventory().isEmpty() || !cooldowns.getCooldownMap().isEmpty())) {
             cooldowns.tick();

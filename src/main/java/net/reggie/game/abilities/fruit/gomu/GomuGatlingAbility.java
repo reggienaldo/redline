@@ -16,19 +16,21 @@ import net.minecraft.util.math.Vec3d;
 import net.reggie.Redline;
 import net.reggie.entity.ModEntities;
 import net.reggie.entity.custom.GomuArmsEntity;
+import net.reggie.game.abilities.AbilityInventoryComposition;
 import net.reggie.game.abilities.IAbility;
 import net.reggie.network.S2C.GatlingS2CPayload;
 import net.reggie.network.S2C.GatlingStopS2CPayload;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class GomuGatlingAbility implements IAbility {
 
-    public static int activeGatlingTicks = 0;
+    private int activeGatlingTicks = 0;
 
     // UNFEHLBARER SPEICHER-TRICK: Merkt sich die gespawnte Entity direkt im RAM,
     // um fehleranfällige Mappings wie getPassengers vollständig zu umgehen!
-    private static GomuArmsEntity currentGomuEntity = null;
+    private GomuArmsEntity currentGomuEntity = null;
 
     @Override public String getId() { return "gomu_gatling"; }
 
@@ -49,6 +51,10 @@ public class GomuGatlingAbility implements IAbility {
 
     @Override
     public void execute(ServerPlayerEntity player) {
+        Redline.ABILITY_COMPONENT.get(player).getGatling().startGatling(player);
+    }
+
+    private void startGatling(ServerPlayerEntity player) {
         var abilityComp = Redline.ABILITY_COMPONENT.get(player);
         ServerWorld serverWorld = player.getServerWorld();
 
@@ -56,18 +62,7 @@ public class GomuGatlingAbility implements IAbility {
         // 1. DER VORZEITIGE ABBRUCH-TRIGGER
         // =========================================================
         if (activeGatlingTicks > 0) {
-            activeGatlingTicks = 0;
-
-            // Despawnt die gespeicherte Entity sofort sicher
-            if (currentGomuEntity != null && currentGomuEntity.isAlive()) {
-                currentGomuEntity.discard();
-                currentGomuEntity = null;
-            }
-
-            for (ServerPlayerEntity trackingPlayer : PlayerLookup.tracking(player)) {
-                ServerPlayNetworking.send(trackingPlayer, new GatlingStopS2CPayload());
-            }
-            ServerPlayNetworking.send(player, new GatlingStopS2CPayload());
+            stopGatling(player);
 
             player.sendMessage(Text.literal("§cGatling abgebrochen!"), true);
             return;
@@ -103,13 +98,25 @@ public class GomuGatlingAbility implements IAbility {
         // 3. S2C ANIMATIONS SYNC (STARTET DIE CLIENT-POSE)
         // =========================================================
         for (ServerPlayerEntity trackingPlayer : PlayerLookup.tracking(player)) {
-            ServerPlayNetworking.send(trackingPlayer, new GatlingS2CPayload());
+            ServerPlayNetworking.send(trackingPlayer, new GatlingS2CPayload(player.getUuid()));
         }
-        ServerPlayNetworking.send(player, new GatlingS2CPayload());
+        ServerPlayNetworking.send(player, new GatlingS2CPayload(player.getUuid()));
     }
 
-    public static void handleGatlingTick(ServerPlayerEntity player) {
+    public void handleGatlingTick(ServerPlayerEntity player) {
         if (activeGatlingTicks <= 0) return;
+
+        AbilityInventoryComposition inventory = Redline.ABILITY_COMPONENT.get(player).getInventory();
+        boolean equipped = Arrays.asList(inventory.getEquippedSlots()).contains(getId()) ||
+                Arrays.asList(inventory.getScrollSlots()).contains(getId());
+        if (!player.isAlive() || !Redline.COMBAT_COMPONENT.get(player).isCombatModeEnabled() ||
+                (!player.isCreative() && player.isTouchingWater()) || !equipped ||
+                !"gomu_gomu".equals(Redline.DEVIL_FRUIT.get(player).getFruitId()) ||
+                currentGomuEntity == null || !currentGomuEntity.isAlive() ||
+                currentGomuEntity.getWorld() != player.getWorld()) {
+            stopGatling(player);
+            return;
+        }
 
         activeGatlingTicks--;
         ServerWorld serverWorld = player.getServerWorld();
@@ -183,19 +190,28 @@ public class GomuGatlingAbility implements IAbility {
         // AUTOMATISCHES ENDE: Wenn die 3 Sekunden natürlich abgelaufen sind
         // =====================================================================
         if (activeGatlingTicks == 0) {
-            if (!serverWorld.isClient() && currentGomuEntity != null) {
-                currentGomuEntity.discard();
-                currentGomuEntity = null;
-            }
-
-            for (ServerPlayerEntity trackingPlayer : PlayerLookup.tracking(player)) {
-                ServerPlayNetworking.send(trackingPlayer, new GatlingStopS2CPayload());
-            }
-            ServerPlayNetworking.send(player, new GatlingStopS2CPayload());
+            stopGatling(player);
         }
     }
 
-    public static boolean isChannelling() {
+    public void stopGatling(ServerPlayerEntity player) {
+        if (activeGatlingTicks <= 0 && currentGomuEntity == null) {
+            return;
+        }
+        activeGatlingTicks = 0;
+
+        if (currentGomuEntity != null) {
+            currentGomuEntity.discard();
+            currentGomuEntity = null;
+        }
+
+        for (ServerPlayerEntity trackingPlayer : PlayerLookup.tracking(player)) {
+            ServerPlayNetworking.send(trackingPlayer, new GatlingStopS2CPayload(player.getUuid()));
+        }
+        ServerPlayNetworking.send(player, new GatlingStopS2CPayload(player.getUuid()));
+    }
+
+    public boolean isChannelling() {
         return activeGatlingTicks > 0;
     }
 

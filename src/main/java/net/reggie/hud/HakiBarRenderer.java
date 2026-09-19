@@ -48,7 +48,7 @@ public class HakiBarRenderer implements HudRenderCallback {
 
         // --- MODIFIZIERTER CHECK: Zeigt die Bar an, wenn mindestens eine Haki-Art UNLOCKED ist ---
         boolean hasAnyHakiGelernt = hakiComp.isBusoUnlocked() || hakiComp.isKenUnlocked() || hakiComp.isHaoUnlocked();
-        if (!hasAnyHakiGelernt) return;
+        if (!hasAnyHakiGelernt && !Redline.DEVIL_FRUIT.get(client.player).hasFruit()) return;
 
         float haki = hakiComp.getHaki();
         float maxHaki = hakiComp.getMaxHaki(); // Nutzt das bombenfeste Level-Skalierungssystem!

@@ -39,6 +39,7 @@ public class RaceCommand {
             // Syntax: /redline race set <Spieler> <Rasse>
             // =========================================================
             raceAdminBuilder.then(CommandManager.literal("set")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.argument("race_id", StringArgumentType.word())
                                     .suggests((context, builder) -> CommandSource.suggestMatching(RACES, builder)) // Tab-Suggestions

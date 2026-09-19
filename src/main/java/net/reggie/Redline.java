@@ -112,6 +112,14 @@ public class Redline implements ModInitializer, EntityComponentInitializer {
 			}
 		});
 
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			Redline.ABILITY_COMPONENT.get(handler.getPlayer()).getGatling().stopGatling(handler.getPlayer());
+		});
+
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			Redline.ABILITY_COMPONENT.get(oldPlayer).getGatling().stopGatling(oldPlayer);
+		});
+
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
 			server.getPlayerManager().getPlayerList().forEach(player -> {
 				Redline.HAKI.get(player).tick(); // ← Hier anpassen!
@@ -145,34 +153,6 @@ public class Redline implements ModInitializer, EntityComponentInitializer {
 
 				// --- WICHTIGER FIX: Zwingt den Server, die gewürfelte Farbe SOFORT dauerhaft zu speichern ---
 				server.getPlayerManager().savePlayerData(player);
-			}
-		});
-
-		ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
-			// Prüft, ob der Angreifer ein echter Spieler auf dem Server war
-			if (damageSource.getAttacker() instanceof ServerPlayerEntity player) {
-
-				// Verhindert, dass man durch das Töten von anderen Spielern (oder sich selbst) Doriki farmt
-				if (entity instanceof PlayerEntity) return;
-
-				// Holt die Doriki-Komponente des Spielers
-				var dorikiComp = net.reggie.Redline.DORIKI.get(player);
-				long currentDoriki = dorikiComp.getDoriki();
-
-				// Wenn das Mine-Mine-no-Mi Maximum (z.B. 10.000) erreicht ist, gibt es keine Punkte mehr
-				if (currentDoriki >= 10000) return;
-
-				// Berechnet Doriki-XP: Mobs mit mehr Max-HP geben deutlich mehr Doriki!
-				float maxHealth = entity.getMaxHealth();
-				long gainedDoriki = Math.max(1, (long) (maxHealth / 4));
-
-				// Doriki hinzufügen (CCA triggert hierdurch automatisch den Client-Sync!)
-				dorikiComp.addDoriki(gainedDoriki);
-
-				// --- TEXTANZEIGE IN DER ACTIONBAR ---
-				// Formatiert: + 5 Doriki [Total: 1250] in den originalen Mine-Mine-no-Mi Farben
-				String dorikiMessage = "§a+ " + gainedDoriki + " Doriki §7[§eTotal: " + dorikiComp.getDoriki() + "§7]";
-				player.sendMessage(net.minecraft.text.Text.literal(dorikiMessage), true);
 			}
 		});
 	}
