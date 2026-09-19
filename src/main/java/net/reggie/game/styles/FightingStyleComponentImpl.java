@@ -45,7 +45,10 @@ public class FightingStyleComponentImpl implements IFightingStyleComponent {
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registries) {
-        this.styleId = tag.getString("ActiveFightingStyle");
+        this.styleId = tag.contains("ActiveFightingStyle") ? tag.getString("ActiveFightingStyle") : "none";
+        if (this.styleId.isEmpty()) {
+            this.styleId = "none";
+        }
         this.styleXp = tag.getLong("FightingStyleXp");
     }
 

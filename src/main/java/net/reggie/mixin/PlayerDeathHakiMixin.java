@@ -22,6 +22,8 @@ public abstract class PlayerDeathHakiMixin {
         // Schaltet alle aktiven Haki-Formen beim Tod des Spielers augenblicklich aus
         hakiComp.setBusoActive(false);
         hakiComp.setKenActive(false);
+        hakiComp.setHaoActive(false);
+        Redline.ABILITY_COMPONENT.get(player).getGatling().stopGatling(player);
 
         // Das manuelle Aufrufen von .sync() ist hier nicht mehr nötig,
         // da setBusoActive und setKenActive in deiner HakiComponentImpl bereits Redline.HAKI.sync(player) auslösen!

@@ -46,12 +46,10 @@ public class GomuBazookaAbility implements IAbility {
         // --- 1. COOLDOWN & KOSTEN CONTROLLE ---
         if (!abilityComp.getCooldowns().isReady(getId())) return;
 
-        // --- 2. S2C ANIMATIONS SYNC (UNIT-PAYLOAD STABIL) ---
-        // Schickt das leere Paket an alle Tracker und dich selbst für maximale Synchronisation
         for (ServerPlayerEntity trackingPlayer : PlayerLookup.tracking(player)) {
-            ServerPlayNetworking.send(trackingPlayer, new BazookaS2CPayload());
+            ServerPlayNetworking.send(trackingPlayer, new BazookaS2CPayload(player.getUuid()));
         }
-        ServerPlayNetworking.send(player, new BazookaS2CPayload());
+        ServerPlayNetworking.send(player, new BazookaS2CPayload(player.getUuid()));
 
         // --- 3. EXECUTION SOUNDS (Explosions-Wucht) ---
         serverWorld.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1.2f, 1.4f);

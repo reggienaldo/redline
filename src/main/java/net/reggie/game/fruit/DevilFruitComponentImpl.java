@@ -31,7 +31,10 @@ public class DevilFruitComponentImpl implements IDevilFruitComponent {
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registries) {
-        this.fruitId = tag.getString("ActiveDevilFruit");
+        this.fruitId = tag.contains("ActiveDevilFruit") ? tag.getString("ActiveDevilFruit") : "none";
+        if (this.fruitId.isEmpty()) {
+            this.fruitId = "none";
+        }
     }
 
     @Override

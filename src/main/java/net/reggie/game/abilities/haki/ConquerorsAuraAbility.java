@@ -13,7 +13,6 @@ import net.minecraft.util.math.Box;
 import net.reggie.Redline;
 import net.reggie.game.abilities.IAbility;
 import net.reggie.game.haki.IHakiComponent;
-import net.reggie.hud.AbilityHudRenderer;
 import net.reggie.particle.ModParticles;
 import net.reggie.sound.ModSounds;
 
@@ -50,7 +49,7 @@ public class ConquerorsAuraAbility implements IAbility {
         IHakiComponent haki = Redline.HAKI.get(player);
         var abilityComp = Redline.ABILITY_COMPONENT.get(player);
 
-        if (!haki.isHaoUnlocked()) {
+        if (!haki.hasConquerorAura()) {
             player.sendMessage(Text.literal("Du besitzt kein Königshaki, um diese Aura zu nutzen!").formatted(Formatting.RED), true);
             return;
         }
@@ -59,9 +58,12 @@ public class ConquerorsAuraAbility implements IAbility {
 
         // --- TICK-BASIERTER COOLDOWN-CHECK VOR DEM EINSCHALTEN ---
         if (newState && !abilityComp.getCooldowns().isReady("conq_aura")) {
-            // Teilt dem HUD mit, WELCHE Fähigkeit blockiert ist, und hält die Warnung für 3 Sekunden (60 Frames)
-            AbilityHudRenderer.alertAbilityId = "conq_aura";
-            AbilityHudRenderer.alertDisplayTicks = 60; // Auf knackige 3 Sekunden fixiert (verhindert hängengebliebenen Text)
+            player.sendMessage(Text.literal("§cDie Königshaki-Aura hat noch Cooldown!"), true);
+            return;
+        }
+
+        if (newState && !player.isCreative() && Redline.DEVIL_FRUIT.get(player).hasFruit() && player.isTouchingWater()) {
+            player.sendMessage(Text.literal("§cDas Wasser lähmt deinen Körper!"), true);
             return;
         }
 
@@ -71,6 +73,9 @@ public class ConquerorsAuraAbility implements IAbility {
             return;
         }
 
+        if (newState) {
+            haki.consumeHaki(cost);
+        }
         haki.setHaoActive(newState);
 
         // --- COOLDOWN APPLIEN BEI MANUELLEM AUSSCHALTEN ---

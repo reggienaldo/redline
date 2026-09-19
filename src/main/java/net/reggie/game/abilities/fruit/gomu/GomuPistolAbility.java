@@ -56,12 +56,10 @@ public class GomuPistolAbility implements IAbility {
                 1.5f, 0.6f
         );
 
-        if (player instanceof ServerPlayerEntity serverPlayer) {
-            ServerPlayNetworking.send(
-                    serverPlayer,
-                    new PistolS2CPayload()
-            );
+        for (ServerPlayerEntity trackingPlayer : PlayerLookup.tracking(player)) {
+            ServerPlayNetworking.send(trackingPlayer, new PistolS2CPayload(player.getUuid()));
         }
+        ServerPlayNetworking.send(player, new PistolS2CPayload(player.getUuid()));
 
         // --- 4. SERVER-HITBOX BERECHNUNG ---
         Vec3d eyePos = player.getEyePos();

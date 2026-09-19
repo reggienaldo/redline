@@ -31,6 +31,10 @@ public abstract class WaterWeaknessMixin {
 
                     // Wenn eine Aura aktiv ist, schalten wir sie einfach aus
                     if (hakiComp.isBusoActive() || hakiComp.isKenActive() || hakiComp.isHaoActive()) {
+                        if (hakiComp.isHaoActive()) {
+                            Redline.ABILITY_COMPONENT.get(player).getCooldowns().setCooldown("conq_aura", 200);
+                            Redline.ABILITY_COMPONENT.sync(player);
+                        }
                         hakiComp.setBusoActive(false);
                         hakiComp.setKenActive(false);
                         hakiComp.setHaoActive(false);

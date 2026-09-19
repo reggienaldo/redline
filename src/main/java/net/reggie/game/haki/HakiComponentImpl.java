@@ -10,8 +10,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.reggie.Redline;
+import net.reggie.game.abilities.AbilityComponent;
+import net.reggie.game.abilities.AbilityInventoryComposition;
 import net.reggie.particle.ModParticles;
 import net.reggie.sound.ModSounds;
+
+import java.util.Arrays;
 
 public class HakiComponentImpl implements IHakiComponent {
     private final PlayerEntity player;
@@ -151,20 +155,13 @@ public class HakiComponentImpl implements IHakiComponent {
 
     @Override
     public void tick() {
-        // --- CRITICAL HUD FIX: Lässt die Cooldowns live auf dem Client-Bildschirm herunterzählen ---
-        // Dieser Block MUSS zwingend vor der Client-Schranke stehen!
-        var localAbilityComp = Redline.ABILITY_COMPONENT.get(player);
-        if (localAbilityComp != null && localAbilityComp.getCooldowns() != null) {
-            localAbilityComp.getCooldowns().tick(); // Ruft deine Tick-Logik für Integers auf dem Client auf
-        }
-
-        // Client-Schranke für die serverseitige Logik
         if (player.getWorld().isClient()) return;
+        AbilityComponent localAbilityComp = Redline.ABILITY_COMPONENT.get(player);
 
         // --- AUTOMATISCHE AURA-FREISCHALTUNG FÜR DAS RASTER-INVENTAR ---
-        var inventory = localAbilityComp.getInventory();
+        AbilityInventoryComposition inventory = localAbilityComp.getInventory();
 
-        if (this.isHaoUnlocked()) {
+        if (this.hasConquerorAura()) {
             if (!inventory.hasUnlocked("conq_aura")) {
                 inventory.unlockAbilityDynamically("conq_aura");
                 Redline.ABILITY_COMPONENT.sync(player);
@@ -172,6 +169,13 @@ public class HakiComponentImpl implements IHakiComponent {
         } else {
             if (inventory.hasUnlocked("conq_aura")) {
                 inventory.getGridInventory().values().removeIf(id -> id.equals("conq_aura"));
+                for (String[] slots : new String[][] { inventory.getEquippedSlots(), inventory.getScrollSlots() }) {
+                    for (int i = 0; i < slots.length; i++) {
+                        if ("conq_aura".equals(slots[i])) {
+                            slots[i] = null;
+                        }
+                    }
+                }
                 Redline.ABILITY_COMPONENT.sync(player);
             }
         }
@@ -192,7 +196,20 @@ public class HakiComponentImpl implements IHakiComponent {
                 this.haoActive = false;
                 Redline.HAKI.sync(player);
             }
-            return;
+        }
+
+        if (busoActive && !busoUnlocked) {
+            setBusoActive(false);
+        }
+        if (kenActive && !kenUnlocked) {
+            setKenActive(false);
+        }
+        boolean auraEquipped = Arrays.asList(inventory.getEquippedSlots()).contains("conq_aura") ||
+                Arrays.asList(inventory.getScrollSlots()).contains("conq_aura");
+        if (haoActive && (!hasConquerorAura() || !auraEquipped)) {
+            setHaoActive(false);
+            localAbilityComp.getCooldowns().setCooldown("conq_aura", 200);
+            Redline.ABILITY_COMPONENT.sync(player);
         }
 
         // --- HAKI ENERGIE-VERBRAUCH PRO TICK ---

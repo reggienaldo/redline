@@ -34,6 +34,7 @@ public class DorikiCommand {
             // SET SUBCOMMAND (Admin Only)
             // =========================================================
             dorikiAdminBuilder.then(CommandManager.literal("set")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             // LongArgumentType.longArg(0L) erlaubt nun alle Zahlen ab 0 aufwärts ohne Deckelung!
                             .then(CommandManager.argument("value", LongArgumentType.longArg(0L))
@@ -47,6 +48,7 @@ public class DorikiCommand {
             // ADD SUBCOMMAND (Admin Only)
             // =========================================================
             dorikiAdminBuilder.then(CommandManager.literal("add")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             // KORREKTUR: LongArgumentType.longArg(1L) erlaubt nun das Hinzufügen
                             // jeder beliebigen Zahl ab 1 aufwärts, ohne Limit!
@@ -73,7 +75,7 @@ public class DorikiCommand {
             IDorikiComponent dorikiComp = Redline.DORIKI.get(player);
 
             source.sendFeedback(() -> Text.literal(" \n§a=== DEIN RPG STATUS ===" +
-                    "\n§fAktuelles Doriki: §e" + dorikiComp.getDoriki() + " §7/ 10000" +
+                    "\n§fAktuelles Doriki: §e" + dorikiComp.getDoriki() +
                     "\n§fHP-Bonus: §c+" + (int) dorikiComp.getHealthBonus() + " HP §7(+" + ((int) dorikiComp.getHealthBonus() / 2) + " Herzen)" +
                     "\n§fAngriffs-Bonus: §2+" + (int) dorikiComp.getDamageBonus() + " DMG" +
                     "\n§a========================"), false);

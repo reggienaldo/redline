@@ -41,6 +41,7 @@ public class FightingStyleCommand {
             // Syntax: /redline style set <Spieler> <Stil>
             // =========================================================
             styleAdminBuilder.then(CommandManager.literal("set")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.argument("style_id", StringArgumentType.word())
                                     .suggests((context, builder) -> CommandSource.suggestMatching(STYLES, builder)) // Tab-Suggestions
@@ -55,6 +56,7 @@ public class FightingStyleCommand {
             // Syntax: /redline style addXp <Spieler> <Anzahl>
             // =========================================================
             styleAdminBuilder.then(CommandManager.literal("addXp")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.argument("xp_value", LongArgumentType.longArg(1L)) // Mindestens 1 XP
                                     .executes(context -> addStyleXp(

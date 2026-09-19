@@ -35,6 +35,7 @@ public class HakiCommand {
             // SET SUBCOMMAND (Admin Only)
             // =========================================================
             hakiAdminBuilder.then(CommandManager.literal("set")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.literal("busoshoku")
                                     .then(CommandManager.argument("value", LongArgumentType.longArg(0L, 1000000000L))
@@ -50,6 +51,7 @@ public class HakiCommand {
             // ADD SUBCOMMAND (Admin Only)
             // =========================================================
             hakiAdminBuilder.then(CommandManager.literal("add")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.literal("busoshoku")
                                     .then(CommandManager.argument("value", LongArgumentType.longArg(1L, 100000000L))
@@ -65,6 +67,7 @@ public class HakiCommand {
             // GRANT BUSOSHOKU SUBCOMMAND (Admin Only)
             // =========================================================
             hakiAdminBuilder.then(CommandManager.literal("grantBusoshoku")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.argument("allowed", BoolArgumentType.bool())
                                     .executes(context -> grantHakiLogic(context.getSource(), EntityArgumentType.getPlayer(context, "player"), "busoshoku", BoolArgumentType.getBool(context, "allowed"))))));
@@ -73,6 +76,7 @@ public class HakiCommand {
             // GRANT KENBUNSHOKU SUBCOMMAND (Admin Only)
             // =========================================================
             hakiAdminBuilder.then(CommandManager.literal("grantKenbunshoku")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.argument("allowed", BoolArgumentType.bool())
                                     .executes(context -> grantHakiLogic(context.getSource(), EntityArgumentType.getPlayer(context, "player"), "kenbunshoku", BoolArgumentType.getBool(context, "allowed"))))));
@@ -81,6 +85,7 @@ public class HakiCommand {
             // GRANT HAOSHOKU SUBCOMMAND (Admin Only)
             // =========================================================
             hakiAdminBuilder.then(CommandManager.literal("grantHaoshoku")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.argument("allowed", BoolArgumentType.bool())
                                     .executes(context -> grantHakiLogic(context.getSource(), EntityArgumentType.getPlayer(context, "player"), "haoshoku", BoolArgumentType.getBool(context, "allowed"))))));
@@ -89,6 +94,7 @@ public class HakiCommand {
             // COLOR SUBCOMMAND (Admin Only)
             // =========================================================
             hakiAdminBuilder.then(CommandManager.literal("color")
+                    .requires(source -> source.hasPermissionLevel(2))
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                             .then(CommandManager.literal("red").executes(context -> setRyouColorLogic(context.getSource(), EntityArgumentType.getPlayer(context, "player"), "red", 0)))
                             .then(CommandManager.literal("blue").executes(context -> setRyouColorLogic(context.getSource(), EntityArgumentType.getPlayer(context, "player"), "blue", 1)))

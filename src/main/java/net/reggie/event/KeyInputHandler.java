@@ -6,10 +6,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.reggie.Redline;
-import net.reggie.RedlineClient;
 import net.reggie.gui.TechniqueInventoryScreen;
 import net.reggie.network.C2S.*;
 import org.lwjgl.glfw.GLFW;
@@ -56,21 +54,10 @@ public class KeyInputHandler {
                 }
 
                 // --- KEYBIND-BLOCK: Verhindert die Animation, wenn man im Wasser ist ---
-                if (dfComp.hasFruit() && client.player.isTouchingWater()) {
+                if (!hakiComp.isBusoActive() && !client.player.isCreative() && dfComp.hasFruit() && client.player.isTouchingWater()) {
                     client.player.sendMessage(Text.literal("§cDas Wasser lähmt deinen Körper!"), true);
                     return; // Bricht ab, BEVOR die Animation oder das Paket gesendet wird!
                 }
-
-                // --- SCHLÜSSEL-FIX: Animation startet SOFORT lokal auf deinem Bildschirm ---
-                ItemStack hand = client.player.getMainHandStack();
-                boolean holdingWeapon = !hand.isEmpty() &&
-                        (hand.getItem() instanceof net.minecraft.item.SwordItem ||
-                                hand.getItem() instanceof net.minecraft.item.MiningToolItem ||
-                                hand.getItem().toString().contains("sword") ||
-                                hand.getItem().toString().contains("weapon"));
-
-                // Spielt die Animation direkt auf deinem eigenen Client ab (Multiplayer-Safe)
-                RedlineClient.playHakiAnim(client.player, holdingWeapon);
 
                 ClientPlayNetworking.send(new BusoTogglePayload()); // Server ruft hakiComp.toggleBusoshoku() auf
             }
